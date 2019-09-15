@@ -1,4 +1,4 @@
-class PostCreationService
+class PostCreationService < ApplicationService
   def initialize(params)
     @login = params[:login]
     @post_params = params.except(:login)

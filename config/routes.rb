@@ -6,6 +6,9 @@ Rails.application.routes.draw do
           get :top
           get :ip_list
         end
+        member do
+          resources :reviews, only: [:create]
+        end
       end
     end
   end
