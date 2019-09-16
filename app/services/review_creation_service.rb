@@ -5,8 +5,7 @@ class ReviewCreationService < ApplicationService
   end
 
   def call
-    ActiveRecord::Base.transaction do
-      @post.lock!
+    @post.with_lock do
       amount = @post.marks_amount
       average = amount == 0 ? @mark : (@post.rating * amount + @mark) / (amount + 1)
       Review.create!(mark: @mark, post_id: @post.id)

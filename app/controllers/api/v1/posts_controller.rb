@@ -9,10 +9,7 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def ip_list
-    @posts = Post.joins(:user)
-                 .group(:ip)
-                 .having('count(users.login) > 1')
-                 .select('ip, array_agg(users.login) as logins')
+    @posts = LoginIp.group(:ip).having('count(login) > 1').select("ip, array_agg(login) as logins")
   end
 
   def top

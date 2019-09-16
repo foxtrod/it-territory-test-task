@@ -9,6 +9,7 @@ RSpec.describe Api::V1::PostsController, type: :request do
 
       it { expect { subject }.to change { User.count }.by(1) }
       it { expect { subject }.to change { Post.count }.by(1) }
+      it { expect { subject }.to change { LoginIp.count }.by(1) }
 
       it 'returns post' do
         subject
@@ -65,12 +66,11 @@ RSpec.describe Api::V1::PostsController, type: :request do
   describe 'GET #ip_list' do
     subject { get ip_list_api_v1_posts_path, params: { format: :json } }
 
-    let!(:user1) { create(:user, login: '1') }
-    let!(:user2) { create(:user, login: '2') }
-    let!(:post1) { create(:post, ip: '0.0.0.0', user: user1) }
-    let!(:post2) { create(:post, ip: '0.0.0.0', user: user2) }
+    let!(:login1) { create(:login_ip, ip: '0.0.0.0', login: '1') }
+    let!(:login3) { create(:login_ip, ip: '0.0.0.0', login: '2') }
+    let!(:login4) { create(:login_ip, ip: '0.0.0.1', login: '3') }
 
-    it 'responds with body' do
+    it 'returns ips with list of logins' do
       subject
       expect(response.status).to eq(200)
       expect(JSON.parse(response.body).first).to eq ({
